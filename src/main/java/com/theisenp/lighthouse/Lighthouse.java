@@ -1,10 +1,12 @@
 package com.theisenp.lighthouse;
 
-import java.net.UnknownHostException;
+import java.awt.BorderLayout;
 import java.util.UUID;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
@@ -39,12 +41,23 @@ public class Lighthouse extends JPanel {
 	 * @param harbor
 	 */
 	public Lighthouse(Harbor harbor) {
-		// TODO
+		// Create a table for peer data
+		LighthouseTableModel model = new LighthouseTableModel();
+		JTable table = new JTable(model);
+		table.setFillsViewportHeight(true);
+		table.setAutoCreateRowSorter(true);
+
+		// Add the table to the layout
+		setLayout(new BorderLayout());
+		add(new JScrollPane(table), BorderLayout.CENTER);
+
+		// Attach the table to the harbor
+		harbor.addListener(new LighthouseListener(model));
+		harbor.open();
 	}
 
 	/**
 	 * @param args
-	 * @throws UnknownHostException
 	 * @throws ParseException
 	 */
 	public static void main(String[] args) throws ParseException {
@@ -91,7 +104,7 @@ public class Lighthouse extends JPanel {
 		frame.setTitle(TITLE);
 		frame.add(new Lighthouse(builder.build()));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(500, 200);
+		frame.setSize(800, 200);
 		frame.setVisible(true);
 	}
 }
