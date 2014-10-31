@@ -10,7 +10,7 @@
 
 	<groupId>com.theisenp.harbor</groupId>
 	<artifactId>lighthouse</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>lighthouse</name>
@@ -66,6 +66,12 @@
 			<groupId>com.theisenp.harbor</groupId>
 			<artifactId>harbor</artifactId>
 			<version>1.1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-cli</groupId>
+			<artifactId>commons-cli</artifactId>
+			<version>1.2</version>
 		</dependency>
 
 		<dependency>
