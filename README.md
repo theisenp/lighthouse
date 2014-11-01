@@ -1,6 +1,8 @@
 Lighthouse
 ==========
 
+[![Build Status](https://travis-ci.org/theisenp/lighthouse.png?branch=master)](https://travis-ci.org/theisenp/lighthouse)
+
 Lighthouse is Swing application that displays the active [Harbor][1] clients on the network.
 
 Usage
