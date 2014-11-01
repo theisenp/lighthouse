@@ -1,12 +1,16 @@
 package com.theisenp.lighthouse;
 
+import static com.theisenp.harbor.utils.HarborUtils.toLcmAddress;
+
 import java.awt.BorderLayout;
 import java.util.UUID;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
@@ -27,6 +31,7 @@ import com.theisenp.harbor.Peer.Status;
 public class Lighthouse extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private static final String TITLE = "Lighthouse";
+	private static final String DESCRIPTION = "Address: %s, Period (ms): %s, Timeout (ms): %s";
 	private static final Peer SELF;
 	static {
 		Peer.Builder builder = new Peer.Builder();
@@ -41,14 +46,20 @@ public class Lighthouse extends JPanel {
 	 * @param harbor
 	 */
 	public Lighthouse(Harbor harbor) {
-		// Create a table for peer data
+		setLayout(new BorderLayout());
+
+		// Add a description of the harbor
+		String address = toLcmAddress(harbor.getAddress(), harbor.getPort(), harbor.getTtl());
+		long period = harbor.getPeriod().getMillis();
+		long timeout = harbor.getTimeout().getMillis();
+		String description = String.format(DESCRIPTION, address, period, timeout);
+		add(new JLabel(description, SwingConstants.CENTER), BorderLayout.SOUTH);
+
+		// Add a table for peer data
 		LighthouseTableModel model = new LighthouseTableModel();
 		JTable table = new JTable(model);
 		table.setFillsViewportHeight(true);
 		table.setAutoCreateRowSorter(true);
-
-		// Add the table to the layout
-		setLayout(new BorderLayout());
 		add(new JScrollPane(table), BorderLayout.CENTER);
 
 		// Attach the table to the harbor
