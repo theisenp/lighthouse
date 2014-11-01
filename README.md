@@ -14,11 +14,11 @@ To run Lighthouse from Maven, type:
     
 You can also provide alternate Harbor configuration parameters:
 
-    mvn exec:java -Dexec.args="-a 239.255.76.67 -p 7667 --ttl 1 --period 1000 --timeout 5000"
+    mvn exec:java -Dexec.args="-a 239.255.76.67 -p 7667 -ttl 1 -period 1000 -timeout 5000"
     
 To print the help information, type:
 
-    mvn mvn exec:java -Dexec.args="--help"
+    mvn mvn exec:java -Dexec.args="-help"
     
 ### Command Line ###
 
