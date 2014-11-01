@@ -14,7 +14,7 @@
 	<packaging>jar</packaging>
 
 	<name>lighthouse</name>
-	<description>A Harbor client that displays all other Harbor clients on the network</description>
+	<description>A Swing application that displays the active Harbor clients on the network</description>
 	<url>https://github.com/theisenp/lighthouse</url>
 	<inceptionYear>2014</inceptionYear>
 	<licenses>

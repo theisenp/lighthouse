@@ -20,7 +20,7 @@ import com.theisenp.harbor.Peer;
 import com.theisenp.harbor.Peer.Status;
 
 /**
- * A display of all the active Harbor clients on the network
+ * A Swing application that displays the active Harbor clients on the network
  * 
  * @author patrick.theisen
  */
