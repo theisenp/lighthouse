@@ -15,6 +15,7 @@ import javax.swing.SwingConstants;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.joda.time.Duration;
@@ -75,15 +76,35 @@ public class Lighthouse extends JPanel {
 		Harbor.Builder builder = new Harbor.Builder();
 		builder.self(SELF);
 
-		// Parse the command line options
+		// Prepare the help information
+		HelpFormatter help = new HelpFormatter();
+		String usage = "java -jar lighthouse.jar";
+
+		// Build the argument parser
 		Options options = new Options();
+		options.addOption("help", false, "Print the usage information");
 		options.addOption("a", "address", true, "The IP component of the LCM address");
 		options.addOption("p", "port", true, "The port component of the LCM address");
 		options.addOption("ttl", true, "The TTL component of the LCM address");
 		options.addOption("period", true, "The publish period length in milliseconds");
 		options.addOption("timeout", true, "The timeout length in milliseconds");
 		CommandLineParser parser = new BasicParser();
-		CommandLine commandLine = parser.parse(options, args);
+
+		// Attempt to parse the arguments
+		CommandLine commandLine = null;
+		try {
+			commandLine = parser.parse(options, args);
+		}
+		catch(ParseException exceptions) {
+			help.printHelp(usage, options);
+			return;
+		}
+
+		// Check for the help flag
+		if(commandLine.hasOption("help")) {
+			help.printHelp(usage, options);
+			return;
+		}
 
 		// Set the address
 		if(commandLine.hasOption('a')) {
