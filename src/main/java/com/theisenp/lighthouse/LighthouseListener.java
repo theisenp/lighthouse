@@ -1,5 +1,7 @@
 package com.theisenp.lighthouse;
 
+import javax.swing.SwingUtilities;
+
 import com.theisenp.harbor.Harbor;
 import com.theisenp.harbor.Peer;
 
@@ -19,22 +21,42 @@ public class LighthouseListener implements Harbor.Listener {
 	}
 
 	@Override
-	public void onConnected(Peer peer) {
-		model.add(peer);
+	public void onConnected(final Peer peer) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				model.add(peer);
+			}
+		});
 	}
 
 	@Override
-	public void onActive(Peer peer) {
-		model.update(peer);
+	public void onActive(final Peer peer) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				model.update(peer);
+			}
+		});
 	}
 
 	@Override
-	public void onInactive(Peer peer) {
-		model.update(peer);
+	public void onInactive(final Peer peer) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				model.update(peer);
+			}
+		});
 	}
 
 	@Override
-	public void onDisconnected(Peer peer) {
-		model.remove(peer);
+	public void onDisconnected(final Peer peer) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				model.remove(peer);
+			}
+		});
 	}
 }

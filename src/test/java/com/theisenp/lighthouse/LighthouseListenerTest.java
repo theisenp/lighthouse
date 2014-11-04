@@ -1,15 +1,18 @@
 package com.theisenp.lighthouse;
 
+import static org.fest.assertions.Fail.fail;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import com.theisenp.harbor.Peer;
-import com.theisenp.lighthouse.LighthouseListener;
-import com.theisenp.lighthouse.LighthouseTableModel;
 
 /**
  * Unit tests for {@link LighthouseListener}
@@ -29,26 +32,67 @@ public class LighthouseListenerTest {
 	}
 
 	@Test
-	public void testOnConnected() {
+	public void testOnConnected() throws InterruptedException {
+		CountDownAnswer answer = new CountDownAnswer(1);
+		doAnswer(answer).when(model).add(peer);
+
 		listener.onConnected(peer);
-		verify(model, times(1)).add(peer);
+		if(!answer.await(1, TimeUnit.SECONDS)) {
+			fail("Peer was never added to the model");
+		}
 	}
 
 	@Test
-	public void testOnActive() {
+	public void testOnActive() throws InterruptedException {
+		CountDownAnswer answer = new CountDownAnswer(1);
+		doAnswer(answer).when(model).update(peer);
+
 		listener.onActive(peer);
-		verify(model, times(1)).update(peer);
+		if(!answer.await(1, TimeUnit.SECONDS)) {
+			fail("Peer was never updated in the model");
+		}
 	}
 
 	@Test
-	public void testOnInactive() {
+	public void testOnInactive() throws InterruptedException {
+		CountDownAnswer answer = new CountDownAnswer(1);
+		doAnswer(answer).when(model).update(peer);
+
 		listener.onInactive(peer);
-		verify(model, times(1)).update(peer);
+		if(!answer.await(1, TimeUnit.SECONDS)) {
+			fail("Peer was never updated in the model");
+		}
 	}
 
 	@Test
-	public void testOnDisconnected() {
+	public void testOnDisconnected() throws InterruptedException {
+		CountDownAnswer answer = new CountDownAnswer(1);
+		doAnswer(answer).when(model).remove(peer);
+
 		listener.onDisconnected(peer);
-		verify(model, times(1)).remove(peer);
+		if(!answer.await(1, TimeUnit.SECONDS)) {
+			fail("Peer was never removed from the model");
+		}
+	}
+
+	/**
+	 * An {@link Answer} that counts down each time it's called
+	 * 
+	 * @author patrick.theisen
+	 */
+	private static class CountDownAnswer extends CountDownLatch implements Answer<Void> {
+
+		/**
+		 * @param count
+		 */
+		public CountDownAnswer(int count) {
+			super(count);
+		}
+
+		@Override
+		public Void answer(InvocationOnMock invocation) throws Throwable {
+			countDown();
+			return null;
+		}
 	}
 }
